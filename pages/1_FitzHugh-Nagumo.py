@@ -1,7 +1,36 @@
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 import streamlit as st
 
 st.set_page_config(layout="wide")
+
+
+def placeholder_plot(index: int):
+    # Example data (replace with actual data)
+    x = [0, 1]
+    y = [0, 1]
+
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(
+            x=x,
+            y=y,
+            mode="lines",
+        )
+    )
+
+    if index == 0:
+        fig.update_layout(
+            yaxis_title="Voltage (mV)",
+        )
+
+    fig.update_layout(
+        xaxis_title="Time (ms)",
+        font=dict(family="Arial", size=12),
+        # plot_bgcolor="#f5f7fa",
+        # paper_bgcolor="#ffffff",
+    )
+
+    return fig
 
 
 def fhn_page():
@@ -19,44 +48,18 @@ def fhn_page():
 
     # Create columns for visualization
     col1, col2, col3, col4 = st.columns(4)
+
     with col1:
-        plot_function()
+        st.plotly_chart(placeholder_plot(0), key="input_1")
 
     with col2:
-        plot_true_solution()
+        st.plotly_chart(placeholder_plot(1), key="input_2")
 
     with col3:
-        plot_approximate_solution()
+        st.plotly_chart(placeholder_plot(2), key="input_3")
 
     with col4:
-        plot_error()
-
-
-def placeholder_plot():
-    # Placeholder function for actual plots
-    fig = plt.figure()
-    plt.plot([0, 1], [0, 1])
-    return fig
-
-
-def plot_function():
-    # Plot input function (replace with actual function)
-    st.pyplot(placeholder_plot())
-
-
-def plot_true_solution():
-    # Plot true solution (replace with actual solution)
-    st.pyplot(placeholder_plot())
-
-
-def plot_approximate_solution():
-    # Plot approximate solution (replace with actual approximation)
-    st.pyplot(placeholder_plot())
-
-
-def plot_error():
-    # Plot error (replace with actual error)
-    st.pyplot(placeholder_plot())
+        st.plotly_chart(placeholder_plot(3), key="input_4")
 
 
 if __name__ == "__main__":
