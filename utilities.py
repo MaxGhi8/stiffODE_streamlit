@@ -13,7 +13,9 @@ def read_data(problem: str, str_model: str):
         case "HH":
             data = loadmat(f"data/hh_trainL2_n_375_points_1260_tf_100_{str_model}.mat")
         case "ORD":
-            pass
+            data = loadmat(
+                f"data/ord_trainL2_n_375_points_3360_tf_1000_{str_model}.mat"
+            )
         case _:
             raise ValueError(f"Invalid problem: {problem}")
 
