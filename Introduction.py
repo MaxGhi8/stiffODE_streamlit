@@ -27,6 +27,16 @@ def main():
             font-size: 0.9em;
             color: var(--text-color);
         }
+        .profile-title-secondary {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            top: -15px;
+            margin-bottom: -5px;
+            font-size: 0.9em;
+            color: var(--text-color);
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -46,7 +56,11 @@ def main():
                 "<p class='profile-name'>Luca Pellegrini</p>", unsafe_allow_html=True
             )
             st.markdown(
-                "<p class='profile-title'>University of Pavia<br>Euler Institute Switzerland</p>",
+                "<p class='profile-title'>University of Pavia</p>",
+                unsafe_allow_html=True,
+            )
+            st.markdown(
+                "<p class='profile-title-secondary'>Euler Institute Switzerland</p>",
                 unsafe_allow_html=True,
             )
             # st.markdown(
@@ -127,5 +141,12 @@ def main():
 
 
 if __name__ == "__main__":
-    st.set_page_config(page_title="FNO ionic models", page_icon=":anatomical_heart:")
+    st.set_page_config(
+        page_title="FNO ionic models",
+        page_icon=":anatomical_heart:",
+        menu_items={
+            "Report a bug": "https://github.com/MaxGhi8/stiffODE_streamlit/issues",
+            "About": "# This is a header. This is an *extremely* cool app!",
+        },
+    )
     main()
