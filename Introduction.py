@@ -40,6 +40,24 @@ def main():
 
             cols = st.columns([1, 5, 1])
             with cols[1]:
+                st.image("luca_pellegrini.png", width=120, use_container_width=False)
+
+            st.markdown(
+                "<p class='profile-name'>Luca Pellegrini</p>", unsafe_allow_html=True
+            )
+            st.markdown(
+                "<p class='profile-title'>University of Pavia<br>Euler Institute Switzerland</p>",
+                unsafe_allow_html=True,
+            )
+            # st.markdown(
+            #     "[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com)"
+            # )
+
+    with col2:
+        with st.container():
+
+            cols = st.columns([1, 5, 1])
+            with cols[1]:
                 st.image(
                     "massimiliano_ghiotto.png", width=120, use_container_width=False
                 )
@@ -56,7 +74,7 @@ def main():
             #     "[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com)"
             # )
 
-    with col2:
+    with col3:
         with st.container():
 
             cols = st.columns([1, 5, 1])
@@ -71,24 +89,6 @@ def main():
             )
             st.markdown(
                 "<p class='profile-title'>University of Pavia</p>",
-                unsafe_allow_html=True,
-            )
-            # st.markdown(
-            #     "[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com)"
-            # )
-
-    with col3:
-        with st.container():
-
-            cols = st.columns([1, 5, 1])
-            with cols[1]:
-                st.image("luca_pellegrini.png", width=120, use_container_width=False)
-
-            st.markdown(
-                "<p class='profile-name'>Luca Pellegrini</p>", unsafe_allow_html=True
-            )
-            st.markdown(
-                "<p class='profile-title'>University of Pavia<br>Euler Institute Switzerland</p>",
                 unsafe_allow_html=True,
             )
             # st.markdown(
