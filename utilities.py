@@ -138,6 +138,7 @@ def plot_outputs(
             t=20,  # top margin
             b=20,  # bottom margin
         ),
+        legend=dict(x=0.5, y=1.0, xanchor="center", yanchor="bottom", orientation="h"),
     )
 
     return fig
