@@ -23,36 +23,18 @@ def fhn_page():
     )
 
     ## Selection of the indexes
-    sample_idx_0 = st.sidebar.number_input(
-        "Index of the first column",
-        min_value=0,
-        max_value=374,
-        value=250,  # default value
-        step=1,  # increment by 1
-    )
-    sample_idx_1 = st.sidebar.number_input(
-        "Index of the second column",
-        min_value=0,
-        max_value=374,
-        value=280,
-        step=1,
-    )
-    sample_idx_2 = st.sidebar.number_input(
-        "Index of the third column",
-        min_value=0,
-        max_value=374,
-        value=310,
-        step=1,
-    )
-    sample_idx_3 = st.sidebar.number_input(
-        "Index of the fourth column",
-        min_value=0,
-        max_value=374,
-        value=340,
-        step=1,
-    )
-
-    sample_idxs = (sample_idx_0, sample_idx_1, sample_idx_2, sample_idx_3)
+    sample_idxs = []
+    initial_values = [250, 280, 310, 340]
+    for idx, initial_value in enumerate(initial_values):
+        sample_idx = st.sidebar.number_input(
+            f"Index of the {idx + 1} column",
+            min_value=0,
+            max_value=374,
+            value=initial_value,
+            step=1,
+            key=f"sample_idx_{idx}",
+        )
+        sample_idxs.append(sample_idx)
 
     ## Plot of the input
     # st.header("Input Function")
@@ -61,12 +43,12 @@ def fhn_page():
         with col:
             if idx == 0:
                 st.plotly_chart(
-                    plot_input(str_model, "input", sample_idx, "Current (mA)"),
+                    plot_input("FHN", str_model, "input", sample_idx, "Current (mA)"),
                     key=f"input_{sample_idx}",
                 )
             else:
                 st.plotly_chart(
-                    plot_input(str_model, "input", sample_idx),
+                    plot_input("FHN", str_model, "input", sample_idx),
                     key=f"input_{sample_idx}",
                 )
 
@@ -79,11 +61,15 @@ def fhn_page():
     for var in range(st.session_state.num_variables):
 
         # Selection of the variable
-        str_variable = st.selectbox(
-            "Select the variable to plot",
-            ["V", "w"],
-            key=f"variable_{var}",  # Unique key for each selectbox
-        )
+        cols = st.columns(4)
+
+        with cols[0]:
+            str_variable = st.selectbox(
+                "Select the variable to plot",
+                ["V", "w"],
+                index=var,
+                key=f"variable_{var}",  # Unique key for each selectbox
+            )
 
         # outputs
         cols = st.columns(4)
@@ -92,13 +78,13 @@ def fhn_page():
                 if idx == 0:
                     st.plotly_chart(
                         plot_outputs(
-                            str_model, str_variable, sample_idx, "Voltage (mV)"
+                            "FHN", str_model, str_variable, sample_idx, "Voltage (mV)"
                         ),
                         key=f"output_{sample_idx}_var_{var}",
                     )
                 else:
                     st.plotly_chart(
-                        plot_outputs(str_model, str_variable, sample_idx),
+                        plot_outputs("FHN", str_model, str_variable, sample_idx),
                         key=f"output_{sample_idx}_var_{var}",
                     )
         # errors
@@ -108,13 +94,17 @@ def fhn_page():
                 if idx == 0:
                     st.plotly_chart(
                         plot_errors(
-                            str_model, str_variable, sample_idx, "Module of the error"
+                            "FHN",
+                            str_model,
+                            str_variable,
+                            sample_idx,
+                            "Module of the error",
                         ),
                         key=f"error_{sample_idx}_var_{var}",
                     )
                 else:
                     st.plotly_chart(
-                        plot_errors(str_model, str_variable, sample_idx),
+                        plot_errors("FHN", str_model, str_variable, sample_idx),
                         key=f"error_{sample_idx}_var_{var}",
                     )
 
