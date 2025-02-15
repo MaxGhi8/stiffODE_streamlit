@@ -157,5 +157,7 @@ def ord_page():
 
 
 if __name__ == "__main__":
-    st.set_page_config(page_title="FNO ionic models", layout="wide")
+    st.set_page_config(
+        page_title="FNO ionic models", layout="wide", page_icon=":anatomical_heart:"
+    )
     ord_page()

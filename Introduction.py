@@ -127,5 +127,5 @@ def main():
 
 
 if __name__ == "__main__":
-    st.set_page_config(page_title="FNO ionic models")
+    st.set_page_config(page_title="FNO ionic models", page_icon=":anatomical_heart:")
     main()
