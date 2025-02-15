@@ -54,11 +54,11 @@ def fhn_page():
 
     ## Plot of the output and the errors
     # Store the number of sets in session state
-    if "num_variables" not in st.session_state:
-        st.session_state.num_variables = 1
+    if "num_variables_fhn" not in st.session_state:
+        st.session_state.num_variables_fhn = 1
 
     # Display all the variables
-    for var in range(st.session_state.num_variables):
+    for var in range(st.session_state.num_variables_fhn):
 
         # Selection of the variable
         cols = st.columns(4)
@@ -110,7 +110,7 @@ def fhn_page():
 
     # Button to add more sets
     if st.button("Add another variable to plot"):
-        st.session_state.num_variables += 1
+        st.session_state.num_variables_fhn += 1
 
 
 if __name__ == "__main__":
