@@ -146,7 +146,7 @@ if __name__ == "__main__":
         page_icon=":anatomical_heart:",
         menu_items={
             "Report a bug": "https://github.com/MaxGhi8/stiffODE_streamlit/issues",
-            "About": "# This is a header. This is an *extremely* cool app!",
+            # "About": "sium",
         },
     )
     main()

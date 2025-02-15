@@ -115,6 +115,12 @@ def fhn_page():
 
 if __name__ == "__main__":
     st.set_page_config(
-        page_title="FNO ionic models", layout="wide", page_icon=":anatomical_heart:"
+        page_title="FNO ionic models",
+        layout="wide",
+        page_icon=":anatomical_heart:",
+        menu_items={
+            "Report a bug": "https://github.com/MaxGhi8/stiffODE_streamlit/issues",
+            # "About": "sium",
+        },
     )
     fhn_page()
