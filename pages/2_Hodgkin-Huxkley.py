@@ -23,7 +23,7 @@ def hh_page():
 
     ## Selection of the indexes
     sample_idxs = []
-    initial_values = [250, 280, 310, 340]
+    initial_values = [270, 300, 330, 360]
     for idx, initial_value in enumerate(initial_values):
         sample_idx = st.sidebar.number_input(
             f"Index of the {idx + 1} column",
