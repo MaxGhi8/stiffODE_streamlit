@@ -5,14 +5,29 @@ from scipy.io import loadmat
 
 
 @st.cache_resource
-def read_data(str_model: str):
-    data = loadmat(f"data/fhn_trainL2_n_375_points_1260_tf_100_{str_model}.mat")
+def read_data(problem: str, str_model: str):
+
+    match problem:
+        case "FHN":
+            data = loadmat(f"data/fhn_trainL2_n_375_points_1260_tf_100_{str_model}.mat")
+        case "HH":
+            data = loadmat(f"data/hh_trainL2_n_375_points_1260_tf_100_{str_model}.mat")
+        case "ORD":
+            pass
+        case _:
+            raise ValueError(f"Invalid problem: {problem}")
+
     return data
 
 
 @st.cache_data
-def plot_input(str_model: str, attribute: str, sample_idx: int, ylabel: str = None):
+def plot_input(
+    problem: str, str_model: str, attribute: str, sample_idx: int, ylabel: str = None
+):
     """
+    problem: str
+        The name of the problem selected by the user.
+
     str_model: str
         The name of the model selected by the user (best, best_samedofs).
 
@@ -29,7 +44,7 @@ def plot_input(str_model: str, attribute: str, sample_idx: int, ylabel: str = No
         The label of the y-axis.
     """
 
-    data = read_data(str_model)
+    data = read_data(problem, str_model)
 
     y_data = data[attribute][sample_idx]
     if attribute == "input":
@@ -70,12 +85,14 @@ def plot_input(str_model: str, attribute: str, sample_idx: int, ylabel: str = No
 
 
 @st.cache_data
-def plot_outputs(str_model: str, attribute: str, sample_idx: int, ylabel: str = None):
+def plot_outputs(
+    problem: str, str_model: str, attribute: str, sample_idx: int, ylabel: str = None
+):
     """
     Same as plot_input, but with the plot of two samples overlapped.
     """
 
-    data = read_data(str_model)
+    data = read_data(problem, str_model)
 
     y_data_exact = data[f"{attribute}_exact"][sample_idx]
     y_data_appro = data[f"{attribute}_pred"][sample_idx]
@@ -125,12 +142,14 @@ def plot_outputs(str_model: str, attribute: str, sample_idx: int, ylabel: str = 
 
 
 @st.cache_data
-def plot_errors(str_model: str, attribute: str, sample_idx: int, ylabel: str = None):
+def plot_errors(
+    problem: str, str_model: str, attribute: str, sample_idx: int, ylabel: str = None
+):
     """
     Same as plot_input, but with the plot of the errors between the exact solution and the approximation.
     """
 
-    data = read_data(str_model)
+    data = read_data(problem, str_model)
 
     y_data_exact = data[f"{attribute}_exact"][sample_idx]
     y_data_appro = data[f"{attribute}_pred"][sample_idx]
