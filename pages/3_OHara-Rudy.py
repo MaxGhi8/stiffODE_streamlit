@@ -11,7 +11,7 @@ def ord_page():
     st.markdown(
         """
         The O'Hara-Rudy model is a mathematical model that describes the generation and propagation
-        of action potentials in cardiomyocytes. The model consists of 49 ordinary differential equations that
+        of action potentials in cardiomyocytes. The model consists of 42 ordinary differential equations that
         describe the dynamics of the membrane potential and the gating variables of ion channels.
     """
     )
