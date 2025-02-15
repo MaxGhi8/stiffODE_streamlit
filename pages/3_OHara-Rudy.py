@@ -157,5 +157,5 @@ def ord_page():
 
 
 if __name__ == "__main__":
-    st.set_page_config(layout="wide")
+    st.set_page_config(page_title="FNO ionic models", layout="wide")
     ord_page()

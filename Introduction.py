@@ -127,5 +127,7 @@ def main():
 
 
 if __name__ == "__main__":
-    st.set_page_config(page_title="ODE Models Visualization")
+    st.set_page_config(
+        page_title="FNO ionic models", icon=":material/network_intel_node:"
+    )
     main()
