@@ -1,107 +1,99 @@
 import streamlit as st
 
-# Main page configuration
-st.set_page_config(page_title="ODE Models Visualization")
-
 
 # Main page content
 def main():
 
     # Title
     st.title("Learning Ionic Model Dynamics Using Fourier Neural Operators")
+    # Create a container with custom CSS
+    st.markdown(
+        """
+        <style>
+        .profile-name {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        .profile-title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: var(--text-color);
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    # Define the CSS with better styling
-    css = """
-    <style>
-    .author-grid {
-        display: grid;
-        gap: 20px;
-        padding: 20px 0;
-    }
+    # Create columns for the cards
+    col1, col2, col3 = st.columns([1, 1, 1], border=True)
 
-    .author-card {
-        background-color: var(--secondary-background-color);
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        transition: all 0.3s ease;
-        border: 1px solid white;
-    }
+    with col1:
+        with st.container():
 
-    .author-card:hover {
-        transform: translateY(-5px);
-    }
+            cols = st.columns([1, 5, 1])
+            with cols[1]:
+                st.image(
+                    "massimiliano_ghiotto.png", width=120, use_container_width=False
+                )
 
-    .author-image {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        margin: 0 auto 15px auto;
-        border: 3px solid white;
-        padding: 3px;
-    }
-
-    .author-name {
-        color: var(--text-color);
-        font-size: 1.2rem;
-        font-weight: 600;
-        margin-bottom: 8px;
-    }
-
-    .author-affiliation {
-        color: var(--text-color);
-        font-size: 0.9rem;
-        line-height: 1.4;
-    }
-    </style>
-    """
-
-    # Define the HTML template for the card
-    card_html = """
-    <div class="author-card">
-        <img class="author-image" src="file://{}">
-        <div class="author-name">{}</div>
-        <div class="author-affiliation">{}</div>
-    </div>
-    """
-
-    # Apply the CSS
-    st.markdown(css, unsafe_allow_html=True)
-
-    # Create a container for better spacing
-    with st.container():
-        # Create columns for the cards
-        col1, col2, col3 = st.columns([1, 1, 1])
-
-        with col1:
             st.markdown(
-                card_html.format(
-                    "massimiliano_ghiotto.jpg",
-                    "Massimiliano Ghiotto",
-                    "University of Pavia",
-                ),
+                "<p class='profile-name'>Massimiliano Ghiotto</p>",
                 unsafe_allow_html=True,
             )
-
-        with col2:
             st.markdown(
-                card_html.format(
-                    "luca_pellegrini.jpeg",
-                    "Luca Franco Pavarino",
-                    "University of Pavia",
-                ),
+                "<p class='profile-title'>University of Pavia</p>",
                 unsafe_allow_html=True,
             )
+            # st.markdown(
+            #     "[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com)"
+            # )
 
-        with col3:
+    with col2:
+        with st.container():
+
+            cols = st.columns([1, 5, 1])
+            with cols[1]:
+                st.image(
+                    "luca_franco_pavarino.png", width=120, use_container_width=False
+                )
+
             st.markdown(
-                card_html.format(
-                    "luca_pellegrini.jpeg",
-                    "Luca Pellegrini",
-                    "University of Pavia,<br>Euler Institute Switzerland",
-                ),
+                "<p class='profile-name'>Luca Franco Pavarino</p>",
                 unsafe_allow_html=True,
             )
+            st.markdown(
+                "<p class='profile-title'>University of Pavia</p>",
+                unsafe_allow_html=True,
+            )
+            # st.markdown(
+            #     "[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com)"
+            # )
+
+    with col3:
+        with st.container():
+
+            cols = st.columns([1, 5, 1])
+            with cols[1]:
+                st.image("luca_pellegrini.png", width=120, use_container_width=False)
+
+            st.markdown(
+                "<p class='profile-name'>Luca Pellegrini</p>", unsafe_allow_html=True
+            )
+            st.markdown(
+                "<p class='profile-title'>University of Pavia<br>Euler Institute Switzerland</p>",
+                unsafe_allow_html=True,
+            )
+            # st.markdown(
+            #     "[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com)"
+            # )
 
     # Description
     st.header("Project Description")
@@ -135,4 +127,5 @@ def main():
 
 
 if __name__ == "__main__":
+    st.set_page_config(page_title="ODE Models Visualization")
     main()
