@@ -112,7 +112,7 @@ def main():
             # )
 
     # Description
-    st.header("Project Description")
+    st.header("Project Description", anchor=False)
     st.markdown(
         """
         This web application serves as an interactive visualization tool for comparing and analyzing different Ordinary Differential Equation (ODE) models commonly used in cardiac electrophysiology.
@@ -133,7 +133,7 @@ def main():
     )
 
     # FNO video
-    st.header("One dimensional Fourier Neural Operator visualization")
+    st.header("One dimensional Fourier Neural Operator visualization", anchor=False)
     st.markdown(
         """
         In this video, we show the architecture of the Fourier Neural Operator for the one-dimensional case, that is the case of interest for our work.
