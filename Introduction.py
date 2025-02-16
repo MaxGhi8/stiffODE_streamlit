@@ -75,7 +75,7 @@ def main():
             cols = st.columns([1, 5, 1])
             with cols[1]:
                 st.image(
-                    "massimiliano_ghiotto.png", width=120, use_container_width=False
+                    "massimiliano_ghiotto.jpg", width=120, use_container_width=False
                 )
 
             st.markdown(
