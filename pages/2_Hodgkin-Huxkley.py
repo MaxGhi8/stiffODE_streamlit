@@ -109,7 +109,7 @@ def hh_page():
 
     # Button to add more sets
     with cols[0]:
-        if st.session_state.num_variables_fhn < 2:
+        if st.session_state.num_variables_fhn < 4:
             if st.button("Add another variable to plot", key="add_var"):
                 st.session_state.num_variables_fhn += 1
                 st.rerun()
