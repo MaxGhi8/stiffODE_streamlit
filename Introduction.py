@@ -5,7 +5,9 @@ import streamlit as st
 def main():
 
     # Title
-    st.title("Learning Ionic Model Dynamics Using Fourier Neural Operators")
+    st.title(
+        "Learning Ionic Model Dynamics Using Fourier Neural Operators", anchor=False
+    )
     # Create a container with custom CSS
     st.markdown(
         """

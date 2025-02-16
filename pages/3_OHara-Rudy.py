@@ -6,7 +6,7 @@ from utilities import plot_input, plot_outputs, plot_errors
 
 
 def ord_page():
-    st.title("OHara-Rudy model")
+    st.title("OHara-Rudy model", anchor=False)
 
     st.markdown(
         """

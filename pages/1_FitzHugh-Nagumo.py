@@ -6,7 +6,7 @@ from utilities import plot_input, plot_outputs, plot_errors
 
 
 def fhn_page():
-    st.title("FitzHugh-Nagumo model")
+    st.title("FitzHugh-Nagumo model", anchor=False)
 
     st.markdown(
         """

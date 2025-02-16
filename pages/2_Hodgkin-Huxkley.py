@@ -6,7 +6,7 @@ from utilities import plot_input, plot_outputs, plot_errors
 
 
 def hh_page():
-    st.title("Hodgkin-Huxley model")
+    st.title("Hodgkin-Huxley model", anchor=False)
 
     st.markdown(
         """
