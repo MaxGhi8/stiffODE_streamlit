@@ -1,4 +1,5 @@
 import streamlit as st
+from scipy.io import loadmat
 import plotly.graph_objects as go
 import torch
 import numpy as np
@@ -19,6 +20,29 @@ def create_input_current(
     input_current = torch.zeros_like(time_vector)
     input_current[mask] = amplitude
     return input_current
+
+
+@st.cache_resource
+def read_stats_model(problem: str):
+    match problem:
+        case "FitzHugh-Nagumo":
+            data = loadmat(f"data/fhn_stats_n_points_1260.mat")
+        case "Hodgkin-Huxley":
+            data = loadmat(f"data/hh_stats_n_points_1260.mat")
+        case "O'Hara-Rudy":
+            pass  # todo
+        case _:
+            raise ValueError(f"Invalid problem: {problem}")
+
+    return data
+
+
+def encode_stats(tensor: torch.Tensor, mean: torch.Tensor, std: torch.Tensor):
+    return (tensor - mean) / (std + 1e-5)
+
+
+def decode_stats(tensor: torch.Tensor, mean: torch.Tensor, std: torch.Tensor):
+    return tensor * std + mean
 
 
 @st.cache_resource
@@ -52,10 +76,28 @@ def load_model(str_problem: str):
 
     # HH trained model
     elif str_problem == "Hodgkin-Huxley":
-        model = torch.load(
-            "models/model_FNO_1D_HodgkinHuxley_best_samedofs_state_dict",
-            weights_only=False,
-            map_location=device,
+        model = FNO(
+            problem_dim=1,
+            in_dim=1,
+            d_v=96,
+            out_dim=4,
+            L=5,
+            modes=5,
+            fun_act="gelu",
+            weights_norm="Kaiming",
+            arc="Zongyi",
+            RNN=False,
+            FFTnorm=None,
+            padding=7,
+            device=device,
+            retrain_fno=4,
+        )
+        model.load_state_dict(
+            torch.load(
+                "models/model_FNO_1D_HodgkinHuxley_best_samedofs_state_dict",
+                weights_only=False,
+                map_location=torch.device("cpu"),
+            )
         )
 
     # ORD trained model
@@ -177,7 +219,10 @@ def test_model_page():
     # Create the input tensor
     input_tensor = create_input_current(n_points, duration, amplitude, max_duration)
     input_tensor = input_tensor.unsqueeze(0).unsqueeze(-1)
-    # todo manca scrivere varianza e media di input e output
+    stats = read_stats_model(str_problem)
+    input_tensor_encoded = encode_stats(
+        input_tensor, stats["mean_input"], stats["std_input"]
+    )  # encode the input
 
     # Load the model
     model = load_model(str_problem)
@@ -185,7 +230,29 @@ def test_model_page():
 
     # Compute the output
     with torch.no_grad():
-        output_tensor = model(input_tensor)
+        output_tensor = model(input_tensor_encoded)
+        if str_problem == "FitzHugh-Nagumo":
+            output_tensor[:, :, [0]] = decode_stats(
+                output_tensor[:, :, [0]], stats["mean_V"], stats["std_V"]
+            )
+            output_tensor[:, :, [1]] = decode_stats(
+                output_tensor[:, :, [1]], stats["mean_w"], stats["std_w"]
+            )
+        elif str_problem == "Hodgkin-Huxley":
+            output_tensor[:, :, [0]] = decode_stats(
+                output_tensor[:, :, [0]], stats["mean_V"], stats["std_V"]
+            )
+            output_tensor[:, :, [1]] = decode_stats(
+                output_tensor[:, :, [1]], stats["mean_m"], stats["std_m"]
+            )
+            output_tensor[:, :, [2]] = decode_stats(
+                output_tensor[:, :, [2]], stats["mean_h"], stats["std_h"]
+            )
+            output_tensor[:, :, [3]] = decode_stats(
+                output_tensor[:, :, [3]], stats["mean_n"], stats["std_n"]
+            )
+        else:
+            pass  # todo: ORD
 
     ## Plot results
     cols_ = st.columns(3)
