@@ -79,7 +79,11 @@ def plot_tensor(tensor, str_problem: str, ylabel: str = None):
     """
     y_data = tensor.cpu().numpy()
     y_data = np.round(y_data, 4)
-    x_data = np.linspace(0, 100, len(y_data))  # todo: check this for ORD
+
+    if str_problem == "FitzHugh-Nagumo" or str_problem == "Hodgkin-Huxley":
+        x_data = np.linspace(0, 100, len(y_data))
+    else:
+        x_data = np.linspace(0, 1000, len(y_data))
 
     fig = go.Figure()
     fig.add_trace(
