@@ -14,15 +14,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def create_input_current(
     n_points: int, duration: float, amplitude: float, max_duration: float
 ):
-    # Create the vector of the input
-    input_current = torch.linspace(0, max_duration, n_points).to(device)
-    # todo: to be optimized
-    for i in range(n_points):
-        if input_current[i] <= duration:
-            input_current[i] = amplitude
-        else:
-            input_current[i] = 0.0
-
+    time_vector = torch.linspace(0, max_duration, n_points).to(device)
+    mask = time_vector <= duration
+    input_current = torch.zeros_like(time_vector)
+    input_current[mask] = amplitude
     return input_current
 
 
