@@ -145,7 +145,7 @@ def main():
 if __name__ == "__main__":
     st.set_page_config(
         page_title="FNO ionic models",
-        page_icon=":anatomical_heart:",
+        page_icon=":moyai:",
         menu_items={
             "Report a bug": "https://github.com/MaxGhi8/stiffODE_streamlit/issues",
             # "About": "sium",
