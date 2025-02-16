@@ -7,7 +7,7 @@ import sys
 sys.path.append("..")
 from models.FNO import FNO
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cpu")
 
 
 @st.cache_data
@@ -54,7 +54,8 @@ def load_model(str_problem: str):
         model = torch.load(
             "models/model_FNO_1D_HodgkinHuxley_best_samedofs_state_dict",
             weights_only=False,
-        ).to(device)
+            map_location=device,
+        )
 
     # ORD trained model
     elif str_problem == "O'Hara-Rudy":
@@ -132,7 +133,6 @@ def test_model_page():
 
     with cols[0]:
         # Selection of the model
-        # st.markdown("### Select the problem:")
         str_problem = st.selectbox(
             "Select the problem",
             ["FitzHugh-Nagumo", "Hodgkin-Huxley", "O'Hara-Rudy"],
@@ -140,7 +140,7 @@ def test_model_page():
 
     with cols[1]:
         # Amplitude current
-        # st.markdown("### Select the amplitude of the applied current:")
+        # todo: trovare max e minimo in base al problema
         amplitude = st.number_input(
             "Select the amplitude of the stimulus (mA)",
             min_value=0.0,
@@ -151,7 +151,6 @@ def test_model_page():
 
     with cols[2]:
         # Duration current
-        # st.markdown("### Select the duration of the stimulus:")
         if str_problem == "FitzHugh-Nagumo" or str_problem == "Hodgkin-Huxley":
             max_duration = 100.0
             duration = st.number_input(
