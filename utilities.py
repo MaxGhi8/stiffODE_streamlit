@@ -52,7 +52,7 @@ def plot_input(
     if attribute == "input":
         y_data = np.round(y_data, 4)
 
-    x_data = np.linspace(0, 100, len(y_data))
+    x_data = np.linspace(0, 100, len(y_data))  # todo: check this for ORD
 
     fig = go.Figure()
     fig.add_trace(
