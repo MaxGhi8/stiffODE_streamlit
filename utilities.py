@@ -106,7 +106,7 @@ def plot_outputs(
             x=x_data,
             y=y_data_appro,
             mode="lines",
-            line=dict(color="red"),
+            line=dict(color="#9649cb"),
             name="FNO",
         )
     )
@@ -115,7 +115,7 @@ def plot_outputs(
             x=x_data,
             y=y_data_exact,
             mode="lines",
-            line=dict(color="blue"),
+            line=dict(color="#f35b04"),
             name="Exact",
         )
     )
