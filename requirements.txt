@@ -2,3 +2,6 @@ streamlit
 plotly
 numpy
 scipy
+torch
+beartype
+jaxtyping
