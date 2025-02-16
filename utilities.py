@@ -78,7 +78,7 @@ def plot_input(
         margin=dict(
             l=20,  # left margin
             r=20,  # right margin
-            t=20,  # top margin
+            t=30,  # top margin
             b=20,  # bottom margin
         ),
     )
@@ -135,7 +135,7 @@ def plot_outputs(
         margin=dict(
             l=20,  # left margin
             r=20,  # right margin
-            t=20,  # top margin
+            t=55,  # top margin
             b=20,  # bottom margin
         ),
         legend=dict(x=0.5, y=1.0, xanchor="center", yanchor="bottom", orientation="h"),
@@ -185,7 +185,7 @@ def plot_errors(
         margin=dict(
             l=20,  # left margin
             r=20,  # right margin
-            t=20,  # top margin
+            t=30,  # top margin
             b=20,  # bottom margin
         ),
     )
