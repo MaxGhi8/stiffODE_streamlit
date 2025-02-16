@@ -46,6 +46,7 @@ def load_model(str_problem: str):
             torch.load(
                 "models/model_FNO_1D_FitzHughNagumo_best_samedofs_state_dict",
                 weights_only=False,
+                map_location=device,
             )
         )
 
