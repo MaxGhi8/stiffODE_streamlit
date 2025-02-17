@@ -35,9 +35,27 @@ def main():
             align-items: center;
             position: relative;
             top: -15px;
-            margin-bottom: -5px;
+            margin-bottom: -10px;
             font-size: 0.9em;
             color: var(--text-color);
+        }
+        .email-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .email-button a {
+            background-color: #0066cc;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: background-color 0.3s;
+        }
+        .email-button a:hover {
+            background-color: #0052a3;
         }
         </style>
         """,
@@ -65,9 +83,16 @@ def main():
                 "<p class='profile-title-secondary'>Euler Institute Switzerland</p>",
                 unsafe_allow_html=True,
             )
-            # st.markdown(
-            #     "[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com)"
-            # )
+            st.markdown(
+                """
+                <div class="email-button">
+                    <a href="mailto:luca.pellegrini02@universitadipavia.it">
+                        <span class="email-emoji">🖂</span> Contact Me
+                    </a>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
     with col2:
         with st.container():
@@ -86,9 +111,16 @@ def main():
                 "<p class='profile-title'>University of Pavia</p>",
                 unsafe_allow_html=True,
             )
-            # st.markdown(
-            #     "[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com)"
-            # )
+            st.markdown(
+                """
+                <div class="email-button">
+                    <a href="mailto:massimiliano.ghiotto01@universitadipavia.it">
+                        <span class="email-emoji">🖂</span> Contact Me
+                    </a>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
     with col3:
         with st.container():
@@ -107,9 +139,16 @@ def main():
                 "<p class='profile-title'>University of Pavia</p>",
                 unsafe_allow_html=True,
             )
-            # st.markdown(
-            #     "[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com)"
-            # )
+            st.markdown(
+                """
+                <div class="email-button">
+                    <a href="mailto:luca.pavarino@unipv.it">
+                        <span class="email-emoji">🖂</span> Contact Me
+                    </a>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
     # Description
     st.header("Project Description", anchor=False)
