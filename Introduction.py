@@ -139,7 +139,7 @@ def main():
         In this video, we show the architecture of the Fourier Neural Operator for the one-dimensional case, that is the case of interest for our work.
     """
     )
-    st.video("FNO_architecture_2d.mp4", loop=True, autoplay=True)
+    st.video("FNO_architecture_1d.mp4", loop=True, autoplay=True)
 
 
 if __name__ == "__main__":
