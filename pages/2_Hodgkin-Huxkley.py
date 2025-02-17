@@ -109,6 +109,7 @@ def hh_page():
                     )
 
     # Button to add more sets
+    cols = st.columns(4)
     with cols[0]:
         if st.session_state.num_variables_hh < 4:
             if st.button("Add another variable to plot", key="add_var"):
