@@ -44,12 +44,12 @@ def hh_page():
             if idx == 0:
                 st.plotly_chart(
                     plot_input("HH", str_model, "input", sample_idx, "Current (mA)"),
-                    key=f"input_{sample_idx}",
+                    key=f"input_{idx}_{sample_idx}",
                 )
             else:
                 st.plotly_chart(
                     plot_input("HH", str_model, "input", sample_idx),
-                    key=f"input_{sample_idx}",
+                    key=f"input_{idx}_{sample_idx}",
                 )
 
     ## Plot of the output and the errors
@@ -80,12 +80,12 @@ def hh_page():
                         plot_outputs(
                             "HH", str_model, str_variable, sample_idx, "Voltage (mV)"
                         ),
-                        key=f"output_{sample_idx}_var_{var}",
+                        key=f"output_{idx}_{sample_idx}_var_{var}",
                     )
                 else:
                     st.plotly_chart(
                         plot_outputs("HH", str_model, str_variable, sample_idx),
-                        key=f"output_{sample_idx}_var_{var}",
+                        key=f"output_{idx}_{sample_idx}_var_{var}",
                     )
         # errors
         cols = st.columns(4)
@@ -100,12 +100,12 @@ def hh_page():
                             sample_idx,
                             "Module of the error",
                         ),
-                        key=f"error_{sample_idx}_var_{var}",
+                        key=f"error_{idx}_{sample_idx}_var_{var}",
                     )
                 else:
                     st.plotly_chart(
                         plot_errors("HH", str_model, str_variable, sample_idx),
-                        key=f"error_{sample_idx}_var_{var}",
+                        key=f"error_{idx}_{sample_idx}_var_{var}",
                     )
 
     # Button to add more sets
