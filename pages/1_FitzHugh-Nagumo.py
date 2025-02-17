@@ -111,16 +111,16 @@ def fhn_page():
 
     # Button to add more sets
     with cols[0]:
-        if st.session_state.num_variables_hh < 2:
+        if st.session_state.num_variables_fhn < 2:
             if st.button("Add another variable to plot", key="add_var"):
-                st.session_state.num_variables_hh += 1
+                st.session_state.num_variables_fhn += 1
                 st.rerun()
         else:
             st.markdown("You have plotted all the variables for this problem.")
     with cols[1]:
-        if st.session_state.num_variables_hh > 1:
+        if st.session_state.num_variables_fhn > 1:
             if st.button("Remove a variable to plot", key="remove_var"):
-                st.session_state.num_variables_hh -= 1
+                st.session_state.num_variables_fhn -= 1
                 st.rerun()
 
 
