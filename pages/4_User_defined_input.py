@@ -6,6 +6,11 @@ import streamlit as st
 import torch
 from scipy.io import loadmat
 
+sys.path.append("solvers")
+from single_run_fhn import solve_fhn
+from single_run_hh import solve_hh
+from single_run_ord import solve_ord
+
 sys.path.append("..")
 from models.FNO import FNO
 
@@ -133,7 +138,7 @@ def load_model(str_problem: str):
     return model
 
 
-def plot_tensor(tensor, str_problem: str, ylabel: str = None):
+def plot_tensor(tensor, str_problem: str, ylabel: str = None, key=None):
     """
     tensor: torch.Tensor
         The tensor to be plotted.
@@ -144,8 +149,13 @@ def plot_tensor(tensor, str_problem: str, ylabel: str = None):
     ylabel: str
         The label of the y-axis.
     """
-    y_data = tensor.cpu().numpy()
-    y_data = np.round(y_data, 4)
+    try:
+        y_data = tensor.cpu().numpy()
+    except AttributeError:
+        y_data = tensor
+
+    if key == "input":
+        y_data = np.round(y_data, 4)
 
     if str_problem == "FitzHugh-Nagumo" or str_problem == "Hodgkin-Huxley":
         x_data = np.linspace(0, 100, len(y_data))
@@ -166,6 +176,9 @@ def plot_tensor(tensor, str_problem: str, ylabel: str = None):
             yaxis_title=ylabel,
         )
 
+    if key == "error":
+        fig.update_yaxes(type="log")
+
     fig.update_layout(
         xaxis_title="Time (ms)",
         font=dict(family="Arial", size=12),
@@ -177,6 +190,71 @@ def plot_tensor(tensor, str_problem: str, ylabel: str = None):
             t=30,  # top margin
             b=20,  # bottom margin
         ),
+    )
+
+    return fig
+
+
+def plot_two_tensor(tensor1, tensor2, str_problem: str, ylabel: str = None):
+    """
+    As plot_tensor but for two tensors.
+
+    tensor1 is the FNO approximation and tensor2 is the exact solution.
+    """
+    try:
+        y_data1 = tensor1.cpu().numpy()
+    except AttributeError:
+        y_data1 = tensor1
+
+    try:
+        y_data2 = tensor2.cpu().numpy()
+    except AttributeError:
+        y_data2 = tensor2
+
+    assert len(y_data1) == len(y_data2), "The two tensors must have the same length."
+
+    if str_problem == "FitzHugh-Nagumo" or str_problem == "Hodgkin-Huxley":
+        x_data = np.linspace(0, 100, len(y_data1))
+    else:
+        x_data = np.linspace(0, 1000, len(y_data1))
+
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(
+            x=x_data,
+            y=y_data1,
+            mode="lines",
+            line=dict(color="#9649cb"),
+            name="FNO",
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=x_data,
+            y=y_data2,
+            mode="lines",
+            line=dict(color="#f35b04"),
+            name="Exact",
+        )
+    )
+
+    if ylabel:
+        fig.update_layout(
+            yaxis_title=ylabel,
+        )
+
+    fig.update_layout(
+        xaxis_title="Time (ms)",
+        font=dict(family="Arial", size=12),
+        width=400,
+        height=300,
+        margin=dict(
+            l=20,  # left margin
+            r=20,  # right margin
+            t=30,  # top margin
+            b=20,  # bottom margin
+        ),
+        legend=dict(x=0.5, y=1.0, xanchor="center", yanchor="bottom", orientation="h"),
     )
 
     return fig
@@ -206,14 +284,30 @@ def test_model_page():
 
     with cols[1]:
         # Amplitude current
-        # todo: trovare max e minimo in base al problema
-        amplitude = st.number_input(
-            "Select the amplitude of the stimulus (mA)",
-            min_value=0.0,
-            max_value=85.0,
-            value=1.0,
-            step=0.01,
-        )
+        if str_problem == "FitzHugh-Nagumo":
+            amplitude = st.number_input(
+                "Select the amplitude of the stimulus (mA)",
+                min_value=0.01,
+                max_value=3.0,
+                value=1.0,
+                step=0.01,
+            )
+        elif str_problem == "Hodgkin-Huxley":
+            amplitude = st.number_input(
+                "Select the amplitude of the stimulus (mA)",
+                min_value=0.01,
+                max_value=200.0,
+                value=100.0,
+                step=0.01,
+            )
+        else:
+            amplitude = st.number_input(
+                "Select the amplitude of the stimulus (mA)",
+                min_value=0.0,
+                max_value=200.0,
+                value=1.0,
+                step=0.01,
+            )
 
     with cols[2]:
         # Duration current
@@ -243,6 +337,7 @@ def test_model_page():
     input_tensor = create_input_current(n_points, duration, amplitude, max_duration)
     input_tensor = input_tensor.unsqueeze(0).unsqueeze(-1)
     stats = read_stats_model(str_problem)
+
     input_tensor_encoded = encode_stats(
         input_tensor, stats["mean_input"], stats["std_input"]
     )  # encode the input
@@ -278,6 +373,49 @@ def test_model_page():
             )
 
         else:
+            python_idx_to_matlab_idx = {
+                0: 40,
+                1: 5,
+                2: 8,
+                3: 7,
+                4: 6,
+                5: 39,
+                6: 38,
+                7: 3,
+                8: 4,
+                9: 1,
+                10: 2,
+                11: 0,
+                12: 21,
+                13: 18,
+                14: 24,
+                15: 31,
+                16: 32,
+                17: 27,
+                18: 28,
+                19: 25,
+                20: 26,
+                21: 13,
+                22: 17,
+                23: 16,
+                24: 10,
+                25: 11,
+                26: 22,
+                27: 23,
+                28: 19,
+                29: 20,
+                30: 14,
+                31: 29,
+                32: 12,
+                33: 15,
+                34: 9,
+                35: 30,
+                36: 37,
+                37: 33,
+                38: 34,
+                39: 35,
+                40: 36,
+            }
             variables = [
                 "CaMK_trap_dataset",
                 "Ca_i_dataset",
@@ -328,22 +466,141 @@ def test_model_page():
                     stats[f"std_{variables[i]}"],
                 )
 
-    ## Plot results
-    cols_ = st.columns(3)
+    ## Compute the high fidelity solution
+    if str_problem == "FitzHugh-Nagumo":
+        y_data_exact, _ = solve_fhn(duration, amplitude)
+    elif str_problem == "Hodgkin-Huxley":
+        y_data_exact, _ = solve_hh(duration, amplitude)
+    else:
+        y_data_exact, _ = solve_ord(duration, amplitude)
 
-    with cols_[0]:
-        # Plot the input
-        st.plotly_chart(
-            plot_tensor(input_tensor.squeeze(), str_problem, "Current (mA)"),
-            key="input",
-        )
+    if "num_variables_user_input" not in st.session_state:
+        st.session_state.num_variables_user_input = 1
 
-    with cols_[1]:
-        # Plot the input
-        st.plotly_chart(
-            plot_tensor(output_tensor[:, :, 11].squeeze(), str_problem, "Current (mA)"),
-            key="output",
-        )
+    # Display all the variables
+    for var in range(st.session_state.num_variables_user_input):
+
+        cols_ = st.columns(3)
+        with cols_[1]:
+            if str_problem == "FitzHugh-Nagumo":
+                str_to_idx = {"V": 0, "w": 1}
+                str_variable = st.selectbox(
+                    "Select the variable to plot",
+                    ["V", "w"],
+                    index=var,
+                    key=f"variable_{var}",  # Unique key for each selectbox
+                )
+            elif str_problem == "Hodgkin-Huxley":
+                str_to_idx = {"V": 0, "m": 1, "h": 2, "n": 3}
+                str_variable = st.selectbox(
+                    "Select the variable to plot",
+                    ["V", "m", "h", "n"],
+                    index=var,
+                    key=f"variable_{var}",  # Unique key for each selectbox
+                )
+            else:
+                str_to_idx = {}
+                for i in range(41):
+                    str_to_idx[variables[i]] = i
+
+                str_variable = st.selectbox(
+                    "Select the variable to plot",
+                    variables,
+                    index=var,
+                    key=f"variable_{var}",  # Unique key for each selectbox
+                )
+
+        cols_ = st.columns(3)
+
+        if var == 0:
+            with cols_[0]:
+                # Plot the input
+                st.plotly_chart(
+                    plot_tensor(
+                        input_tensor.squeeze(), str_problem, "Current (mA)", key="input"
+                    ),
+                    key="input",
+                )
+
+        with cols_[1]:
+            # Plot the input
+            st.plotly_chart(
+                plot_two_tensor(
+                    output_tensor[:, :, str_to_idx[str_variable]].squeeze(),
+                    (
+                        y_data_exact.y[
+                            python_idx_to_matlab_idx[str_to_idx[str_variable]]
+                        ]
+                        if str_problem == "O'Hara-Rudy"
+                        else y_data_exact.y[str_to_idx[str_variable]]
+                    ),
+                    str_problem,
+                    "Current (mA)",
+                ),
+                key=f"output_var_{var}",
+            )
+
+        with cols_[2]:
+            # Plot the input
+            if str_problem == "O'Hara-Rudy":
+                st.plotly_chart(
+                    plot_tensor(
+                        abs(
+                            output_tensor[0, :, str_to_idx[str_variable]]
+                            - y_data_exact.y[
+                                python_idx_to_matlab_idx[str_to_idx[str_variable]]
+                            ]
+                        ),
+                        str_problem,
+                        "Current (mA)",
+                        key="error",
+                    ),
+                    key=f"error_var_{var}",
+                )
+            else:
+                st.plotly_chart(
+                    plot_tensor(
+                        abs(
+                            output_tensor[0, :, str_to_idx[str_variable]]
+                            - y_data_exact.y[str_to_idx[str_variable]]
+                        ),
+                        str_problem,
+                        "Current (mA)",
+                        key="error",
+                    ),
+                    key=f"error_var_{var}",
+                )
+
+    # Button to add more sets
+    cols = st.columns(3)
+    with cols[1]:
+        if str_problem == "FitzHugh-Nagumo":
+            if st.session_state.num_variables_user_input < 2:
+                if st.button("Add another variable to plot", key="add_var"):
+                    st.session_state.num_variables_user_input += 1
+                    st.rerun()
+            else:
+                st.markdown("You have plotted all the variables for this problem.")
+        elif str_problem == "Hodgkin-Huxley":
+            if st.session_state.num_variables_user_input < 4:
+                if st.button("Add another variable to plot", key="add_var"):
+                    st.session_state.num_variables_user_input += 1
+                    st.rerun()
+            else:
+                st.markdown("You have plotted all the variables for this problem.")
+        else:
+            if st.session_state.num_variables_user_input < 41:
+                if st.button("Add another variable to plot", key="add_var"):
+                    st.session_state.num_variables_user_input += 1
+                    st.rerun()
+            else:
+                st.markdown("You have plotted all the variables for this problem.")
+
+    with cols[2]:
+        if st.session_state.num_variables_user_input > 1:
+            if st.button("Remove a variable to plot", key="remove_var"):
+                st.session_state.num_variables_user_input -= 1
+                st.rerun()
 
 
 if __name__ == "__main__":
