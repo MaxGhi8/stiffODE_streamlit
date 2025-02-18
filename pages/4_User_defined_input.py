@@ -1,9 +1,10 @@
-import streamlit as st
-from scipy.io import loadmat
-import plotly.graph_objects as go
-import torch
-import numpy as np
 import sys
+
+import numpy as np
+import plotly.graph_objects as go
+import streamlit as st
+import torch
+from scipy.io import loadmat
 
 sys.path.append("..")
 from models.FNO import FNO
@@ -26,11 +27,11 @@ def create_input_current(
 def read_stats_model(problem: str):
     match problem:
         case "FitzHugh-Nagumo":
-            data = loadmat(f"data/fhn_stats_n_points_1260.mat")
+            data = loadmat("data/fhn_stats_n_points_1260.mat")
         case "Hodgkin-Huxley":
-            data = loadmat(f"data/hh_stats_n_points_1260.mat")
+            data = loadmat("data/hh_stats_n_points_1260.mat")
         case "O'Hara-Rudy":
-            pass  # todo
+            data = loadmat("data/ord_stats_n_points_10080.mat")
         case _:
             raise ValueError(f"Invalid problem: {problem}")
 
@@ -102,7 +103,29 @@ def load_model(str_problem: str):
 
     # ORD trained model
     elif str_problem == "O'Hara-Rudy":
-        pass  # todo
+        model = FNO(
+            problem_dim=1,
+            in_dim=1,
+            d_v=48,
+            out_dim=41,
+            L=5,
+            modes=22,
+            fun_act="gelu",
+            weights_norm="Kaiming",
+            arc="Classic",
+            RNN=False,
+            FFTnorm=None,
+            padding=14,
+            device=device,
+            retrain_fno=4,
+        )
+        model.load_state_dict(
+            torch.load(
+                "models/model_FNO_1D_OHaraRudy_best_samedofs_state_dict",
+                weights_only=False,
+                map_location=torch.device("cpu"),
+            )
+        )
 
     else:
         raise ValueError(f"Invalid problem: {str_problem}")
@@ -187,7 +210,7 @@ def test_model_page():
         amplitude = st.number_input(
             "Select the amplitude of the stimulus (mA)",
             min_value=0.0,
-            max_value=5.0,
+            max_value=85.0,
             value=1.0,
             step=0.01,
         )
@@ -213,7 +236,7 @@ def test_model_page():
                 value=1.0,
                 step=0.01,
             )
-            n_points = 3360
+            n_points = 10080
 
     ## FNO evaluation
     # Create the input tensor
@@ -231,6 +254,7 @@ def test_model_page():
     # Compute the output
     with torch.no_grad():
         output_tensor = model(input_tensor_encoded)
+
         if str_problem == "FitzHugh-Nagumo":
             output_tensor[:, :, [0]] = decode_stats(
                 output_tensor[:, :, [0]], stats["mean_V"], stats["std_V"]
@@ -238,6 +262,7 @@ def test_model_page():
             output_tensor[:, :, [1]] = decode_stats(
                 output_tensor[:, :, [1]], stats["mean_w"], stats["std_w"]
             )
+
         elif str_problem == "Hodgkin-Huxley":
             output_tensor[:, :, [0]] = decode_stats(
                 output_tensor[:, :, [0]], stats["mean_V"], stats["std_V"]
@@ -251,8 +276,57 @@ def test_model_page():
             output_tensor[:, :, [3]] = decode_stats(
                 output_tensor[:, :, [3]], stats["mean_n"], stats["std_n"]
             )
+
         else:
-            pass  # todo: ORD
+            variables = [
+                "CaMK_trap_dataset",
+                "Ca_i_dataset",
+                "Ca_jsr_dataset",
+                "Ca_nsr_dataset",
+                "Ca_ss_dataset",
+                "J_rel_CaMK_dataset",
+                "J_rel_NP_dataset",
+                "K_i_dataset",
+                "K_ss_dataset",
+                "Na_i_dataset",
+                "Na_ss_dataset",
+                "V_dataset",
+                "a_CaMK_dataset",
+                "a_dataset",
+                "d_dataset",
+                "f_CaMK_fast_dataset",
+                "f_Ca_CaMK_fast_dataset",
+                "f_Ca_fast_dataset",
+                "f_Ca_slow_dataset",
+                "f_fast_dataset",
+                "f_slow_dataset",
+                "h_CaMK_slow_dataset",
+                "h_L_CaMK_dataset",
+                "h_L_dataset",
+                "h_fast_dataset",
+                "h_slow_dataset",
+                "i_CaMK_fast_dataset",
+                "i_CaMK_slow_dataset",
+                "i_fast_dataset",
+                "i_slow_dataset",
+                "j_CaMK_dataset",
+                "j_Ca_dataset",
+                "j_dataset",
+                "m_L_dataset",
+                "m_dataset",
+                "n_dataset",
+                "x_k1_dataset",
+                "x_r_fast_dataset",
+                "x_r_slow_dataset",
+                "x_s1_dataset",
+                "x_s2_dataset",
+            ]
+            for i in range(41):
+                output_tensor[:, :, [i]] = decode_stats(
+                    output_tensor[:, :, [i]],
+                    stats[f"mean_{variables[i]}"],
+                    stats[f"std_{variables[i]}"],
+                )
 
     ## Plot results
     cols_ = st.columns(3)
@@ -261,14 +335,14 @@ def test_model_page():
         # Plot the input
         st.plotly_chart(
             plot_tensor(input_tensor.squeeze(), str_problem, "Current (mA)"),
-            key=f"input",
+            key="input",
         )
 
     with cols_[1]:
         # Plot the input
         st.plotly_chart(
-            plot_tensor(output_tensor[:, :, 0].squeeze(), str_problem, "Current (mA)"),
-            key=f"output",
+            plot_tensor(output_tensor[:, :, 11].squeeze(), str_problem, "Current (mA)"),
+            key="output",
         )
 
 

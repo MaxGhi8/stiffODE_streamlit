@@ -25,7 +25,7 @@ def ord_page():
 
     ## Selection of the indexes
     sample_idxs = []
-    initial_values = [270, 300, 330, 360]
+    initial_values = [270, 310, 330, 360]
     for idx, initial_value in enumerate(initial_values):
         sample_idx = st.sidebar.number_input(
             f"Index of the {idx + 1} column",
@@ -73,7 +73,6 @@ def ord_page():
                     "Ca_jsr_dataset",
                     "Ca_nsr_dataset",
                     "Ca_ss_dataset",
-                    "I_app_dataset",
                     "J_rel_CaMK_dataset",
                     "J_rel_NP_dataset",
                     "K_i_dataset",

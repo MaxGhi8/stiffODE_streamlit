@@ -1,6 +1,6 @@
+import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
-import numpy as np
 from scipy.io import loadmat
 
 
@@ -14,7 +14,7 @@ def read_data(problem: str, str_model: str):
             data = loadmat(f"data/hh_trainL2_n_375_points_1260_tf_100_{str_model}.mat")
         case "ORD":
             data = loadmat(
-                f"data/ord_trainL2_n_375_points_3360_tf_1000_{str_model}.mat"
+                f"data/ord_trainL2_n_375_points_2520_tf_1000_{str_model}.mat"
             )
         case _:
             raise ValueError(f"Invalid problem: {problem}")
