@@ -535,7 +535,11 @@ def test_model_page():
                         else y_data_exact.y[str_to_idx[str_variable]]
                     ),
                     str_problem,
-                    "Current (mA)",
+                    (
+                        f"Output {str_variable.replace('_', ' ')[:-7]}"
+                        if str_problem == "O'Hara-Rudy"
+                        else f"Output {str_variable}"
+                    ),
                 ),
                 key=f"output_var_{var}",
             )
@@ -552,7 +556,7 @@ def test_model_page():
                             ]
                         ),
                         str_problem,
-                        "Current (mA)",
+                        "Module of the error",
                         key="error",
                     ),
                     key=f"error_var_{var}",
@@ -565,7 +569,7 @@ def test_model_page():
                             - y_data_exact.y[str_to_idx[str_variable]]
                         ),
                         str_problem,
-                        "Current (mA)",
+                        "Module of the error",
                         key="error",
                     ),
                     key=f"error_var_{var}",

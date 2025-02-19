@@ -121,7 +121,11 @@ def ord_page():
                 if idx == 0:
                     st.plotly_chart(
                         plot_outputs(
-                            "ORD", str_model, str_variable, sample_idx, "Voltage (mV)"
+                            "ORD",
+                            str_model,
+                            str_variable,
+                            sample_idx,
+                            f"Output {str_variable.replace('_', ' ')[:-7]}",
                         ),
                         key=f"output_{idx}_{sample_idx}_var_{var}",
                     )

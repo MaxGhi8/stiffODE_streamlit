@@ -78,7 +78,11 @@ def hh_page():
                 if idx == 0:
                     st.plotly_chart(
                         plot_outputs(
-                            "HH", str_model, str_variable, sample_idx, "Voltage (mV)"
+                            "HH",
+                            str_model,
+                            str_variable,
+                            sample_idx,
+                            f"Output {str_variable}",
                         ),
                         key=f"output_{idx}_{sample_idx}_var_{var}",
                     )
