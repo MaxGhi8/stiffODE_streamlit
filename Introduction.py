@@ -70,7 +70,7 @@ def main():
 
             cols = st.columns([1, 5, 1])
             with cols[1]:
-                st.image("luca_pellegrini.png", width=120, use_container_width=False)
+                st.image("luca_pellegrini.png", width=120, use_container_width=True)
 
             st.markdown(
                 "<p class='profile-name'>Luca Pellegrini</p>", unsafe_allow_html=True
@@ -100,7 +100,7 @@ def main():
             cols = st.columns([1, 5, 1])
             with cols[1]:
                 st.image(
-                    "massimiliano_ghiotto.jpg", width=120, use_container_width=False
+                    "massimiliano_ghiotto.jpg", width=120, use_container_width=True
                 )
 
             st.markdown(
@@ -128,7 +128,7 @@ def main():
             cols = st.columns([1, 5, 1])
             with cols[1]:
                 st.image(
-                    "luca_franco_pavarino.png", width=120, use_container_width=False
+                    "luca_franco_pavarino.png", width=120, use_container_width=True
                 )
 
             st.markdown(
