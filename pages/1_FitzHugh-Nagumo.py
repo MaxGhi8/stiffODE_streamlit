@@ -4,9 +4,20 @@ import streamlit as st
 
 sys.path.append("..")
 from utilities import plot_errors, plot_input, plot_outputs
+from streamlit_js_eval import streamlit_js_eval
 
 
 def fhn_page():
+
+    width = streamlit_js_eval(
+        js_expressions="screen.width", want_output=True, key="SCR"
+    )
+
+    if width < 500:
+        i_max = 1
+    else:
+        i_max = 4
+
     st.title("FitzHugh-Nagumo model", anchor=False)
 
     st.markdown(
@@ -39,7 +50,7 @@ def fhn_page():
 
     ## Plot of the input
     # st.header("Input Function")
-    cols = st.columns(4)
+    cols = st.columns(i_max)
     for idx, (col, sample_idx) in enumerate(zip(cols, sample_idxs)):
         with col:
             if idx == 0:
@@ -62,7 +73,7 @@ def fhn_page():
     for var in range(st.session_state.num_variables_fhn):
 
         # Selection of the variable
-        cols = st.columns(4)
+        cols = st.columns(i_max)
 
         with cols[0]:
             str_variable = st.selectbox(
@@ -73,7 +84,7 @@ def fhn_page():
             )
 
         # outputs
-        cols = st.columns(4)
+        cols = st.columns(i_max)
         for idx, (col, sample_idx) in enumerate(zip(cols, sample_idxs)):
             with col:
                 if idx == 0:
@@ -93,7 +104,7 @@ def fhn_page():
                         key=f"output_{idx}_{sample_idx}_var_{var}",
                     )
         # errors
-        cols = st.columns(4)
+        cols = st.columns(i_max)
         for idx, (col, sample_idx) in enumerate(zip(cols, sample_idxs)):
             with col:
                 if idx == 0:
@@ -114,7 +125,7 @@ def fhn_page():
                     )
 
     # Button to add more sets
-    cols = st.columns(4)
+    cols = st.columns(i_max)
     with cols[0]:
         if st.session_state.num_variables_fhn < 2:
             if st.button("Add another variable to plot", key="add_var"):
