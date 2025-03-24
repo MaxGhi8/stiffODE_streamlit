@@ -1,12 +1,21 @@
 import sys
 
 import streamlit as st
+from streamlit_js_eval import streamlit_js_eval
 
 sys.path.append("..")
 from utilities import plot_errors, plot_input, plot_outputs
 
 
 def ord_page():
+    width = streamlit_js_eval(
+        js_expressions="screen.width", want_output=True, key="SCR"
+    )
+    if width < 500:
+        i_max = 1
+    else:
+        i_max = 4
+
     st.title("OHara-Rudy model", anchor=False)
 
     st.markdown(
@@ -25,7 +34,7 @@ def ord_page():
 
     ## Selection of the indexes
     sample_idxs = []
-    initial_values = [270, 310, 330, 360]
+    initial_values = [270, 310, 330, 360] if i_max == 4 else [270]
     for idx, initial_value in enumerate(initial_values):
         sample_idx = st.sidebar.number_input(
             f"Index of the {idx + 1} column",
@@ -39,7 +48,7 @@ def ord_page():
 
     ## Plot of the input
     # st.header("Input Function")
-    cols = st.columns(4)
+    cols = st.columns(i_max)
     for idx, (col, sample_idx) in enumerate(zip(cols, sample_idxs)):
         with col:
             if idx == 0:
@@ -62,7 +71,7 @@ def ord_page():
     for var in range(st.session_state.num_variables_ord):
 
         # Selection of the variable
-        cols = st.columns(4)
+        cols = st.columns(i_max)
 
         with cols[0]:
             str_variable = st.selectbox(
@@ -115,7 +124,7 @@ def ord_page():
             )
 
         # outputs
-        cols = st.columns(4)
+        cols = st.columns(i_max)
         for idx, (col, sample_idx) in enumerate(zip(cols, sample_idxs)):
             with col:
                 if idx == 0:
@@ -135,7 +144,7 @@ def ord_page():
                         key=f"output_{idx}_{sample_idx}_var_{var}",
                     )
         # errors
-        cols = st.columns(4)
+        cols = st.columns(i_max)
         for idx, (col, sample_idx) in enumerate(zip(cols, sample_idxs)):
             with col:
                 if idx == 0:

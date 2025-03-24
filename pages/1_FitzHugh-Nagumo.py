@@ -8,7 +8,6 @@ from streamlit_js_eval import streamlit_js_eval
 
 
 def fhn_page():
-
     width = streamlit_js_eval(
         js_expressions="screen.width", want_output=True, key="SCR"
     )
@@ -36,7 +35,7 @@ def fhn_page():
 
     ## Selection of the indexes
     sample_idxs = []
-    initial_values = [250, 280, 310, 340]
+    initial_values = [250, 280, 310, 340] if i_max == 4 else [250]
     for idx, initial_value in enumerate(initial_values):
         sample_idx = st.sidebar.number_input(
             f"Index of the {idx + 1} column",
