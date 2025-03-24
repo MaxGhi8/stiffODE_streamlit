@@ -12,10 +12,11 @@ def fhn_page():
         js_expressions="screen.width", want_output=True, key="SCR"
     )
 
-    if width < 500:
-        i_max = 1
+    i_max = 4  # Default value
+    if width is not None:
+        i_max = 1 if width < 500 else 4
     else:
-        i_max = 4
+        st.write("Retrieving screen width for visualization...")
 
     st.title("FitzHugh-Nagumo model", anchor=False)
 

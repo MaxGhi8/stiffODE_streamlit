@@ -11,10 +11,12 @@ def hh_page():
     width = streamlit_js_eval(
         js_expressions="screen.width", want_output=True, key="SCR"
     )
-    if width < 500:
-        i_max = 1
+
+    i_max = 4  # Default value
+    if width is not None:
+        i_max = 1 if width < 500 else 4
     else:
-        i_max = 4
+        st.write("Retrieving screen width for visualization...")
 
     st.title("Hodgkin-Huxley model", anchor=False)
 
