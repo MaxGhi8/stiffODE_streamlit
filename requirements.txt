@@ -6,3 +6,4 @@ torch
 beartype
 jaxtyping
 matplotlib
+streamlit-js-eval
